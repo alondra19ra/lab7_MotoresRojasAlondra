@@ -7,7 +7,7 @@ public class AudioPanelController : MonoBehaviour
     public static AudioPanelController Instance;
     [SerializeField] private GameObject audioPanel;
 
-    private void Awake()
+    /*private void Awake()
     {
         if (Instance == null)
         {
@@ -19,7 +19,7 @@ public class AudioPanelController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }
+    }*/
     public void ShowAudioPanel()
     {
         audioPanel.SetActive(true);

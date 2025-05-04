@@ -5,9 +5,8 @@ using UnityEngine.Audio;
 
 public class RoomAudioManager : MonoBehaviour
 {
-    public AudioSource audioSource;  
-    public AudioClip[] roomMusic;   
-    private AudioMixer audioMixer;
+    [SerializeField] private AudioSource audioSource;  
+    [SerializeField] private AudioMixer audioMixer;
 
     private void Awake()
     {
@@ -15,17 +14,19 @@ public class RoomAudioManager : MonoBehaviour
         audioMixer = Resources.Load<AudioMixer>("YourAudioMixer");
     }
 
-    public void ChangeRoomMusic(int roomIndex)
+    public void ChangeRoomMusic(RoomMusicSO room)
     {
-        if (roomIndex >= 0 && roomIndex < roomMusic.Length)
-        {
-            audioSource.clip = roomMusic[roomIndex];
-            audioSource.Play();
-        }
+        if (room == null || room.musicClip == null) return;
+
+        audioSource.clip = room.musicClip;
+        audioSource.volume = room.defaultVolume;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("MusicVolume", volume);
+        float dB = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
+        audioMixer.SetFloat("MusicVolume", dB);
     }
 }

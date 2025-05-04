@@ -1,22 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomTrigger : MonoBehaviour
 {
-    public int roomIndex;
-    [SerializeField] private int nextSceneBuildIndex;
+    [Tooltip("Asigna aquí el ScriptableObject con la música de esta habitación")]
+    [SerializeField] private RoomMusicSO roomMusic;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player"))
+            return;
+
+        var mgr = FindObjectOfType<RoomAudioManager>();
+        if (mgr == null)
         {
-            SceneController.Instance.LoadSceneWithFade(nextSceneBuildIndex);
-            RoomAudioManager audioManager = FindObjectOfType<RoomAudioManager>();
-            if (audioManager != null)
-            {
-                audioManager.ChangeRoomMusic(roomIndex);
-            }
+            
+            return;
         }
+
+        if (roomMusic == null)
+        {
+            
+            return;
+        }
+
+        mgr.ChangeRoomMusic(roomMusic);
     }
 }
+
+
+
