@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;  
     [SerializeField] private AudioSettings[] audioSettings;
 
     private float[] _savedVolumes;
@@ -11,6 +12,17 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         _dataLength = audioSettings.Length;
 
         _savedVolumes = new float[_dataLength];
